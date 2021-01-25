@@ -3,7 +3,7 @@ const div = document.createElement('div')
 div.classList.add('keyboard')   
 document.querySelector('.calculator').appendChild(div)
 
-'( ) C CE 7 8 9 / 4 5 6 * 1 2 3 - 0 + = ^ '.split(' ')
+'( ) ^ CE 7 8 9 / 4 5 6 * 1 2 3 + . 0 = -'.split(' ')
     .map(symbol => {
         div.insertAdjacentHTML('beforeend', `<button value="${symbol}">${symbol}</button>`)
     })
@@ -14,10 +14,12 @@ document.querySelectorAll('button').forEach(button => {
             button.style.backgroundColor = 'steelblue';
             button.addEventListener('click', function (){calc()})
             break
-        case 'C':
-            button.style.backgroundColor = 'red';
+        
+        case 'CE':
+            button.style.backgroundColor = 'darkred'
             button.addEventListener('click', function(){clearThis()})
             break
+
         default:
             button.addEventListener('click', function(){print(button.value)})
             break
@@ -30,10 +32,16 @@ function print(sign) {
 }
 
 function calc(){
-    var myExpr = output.value
+    const myExpr = output.value
+    var postfix = parser(myExpr)
     var result
-    clearThis()
-    
+    var temp
+    for(let i = 0; i < postfix.length; ++i){
+        if(priority(postfix[i]) == 5) {
+
+        }
+    }
+    output.value = result
 }
 
 function clearThis(){
@@ -78,7 +86,6 @@ function parser(expression){
     var stack = new Array()
     let index = 0
     var myInt = ""
-    var operatorRegExp = /([0-9]+)|([0](?=[.])[0-9]{1,10})|([1-9]([0-9]+)(?=[.])[0-9]{1,10})/
     while(index < expression.length) {
         switch(priority(expression[index])){
             case 0:
@@ -151,8 +158,7 @@ function parser(expression){
                 break
             
             case 5:
-                var operationRegExp = /[+]|[-]|[*]|[/]|[^]/
-                while((expression[index] != expression.match(operationRegExp)) && (index < expression.length)) {
+                while((priority(expression[index]) == 5) && (index < expression.length)) {
                     myInt += expression[index]
                     ++index
                 }

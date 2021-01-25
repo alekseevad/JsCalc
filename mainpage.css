@@ -8,15 +8,15 @@ body {
   height: 100vh;
   display: -webkit-flex;
   flex-direction: row;
-  background: radial-gradient(circle, yellow, steelblue);
+  background: radial-gradient(circle, yellow, rgb(23, 142, 240));
   justify-content: center;
   align-items: center;
 }
 
 .calculator {
+  background-image: url("materials/mikasa.jpg");
   width: 320px;
   height: 480px;
-  background: #eee;
   border-radius: 5px;
   box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.2), -2px -2px 3px rgba(0, 0, 0, 0.2);
 }
@@ -48,13 +48,18 @@ button {
   margin: 0.5em 1em;
   width: 40px;
   height: 40px;
-  display: flex;
+  display: inline-flex;
   justify-content: center;
   align-items: center;
-  background: none;
-  border: none;
+  background-color: 'white';
+  border: 4px solid #0f1ffd;
   cursor: pointer;
   font-size: 1em;
   font-weight: bold;
+  transition-duration: 0.4s;
 }
 
+button:hover { 
+  background-color: blue;
+  color: white;
+}
