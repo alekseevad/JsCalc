@@ -14,7 +14,7 @@ body {
 }
 
 .calculator {
-  background-image: url("materials/mikasa.jpg");
+  background-color: whitesmoke;
   width: 320px;
   height: 480px;
   border-radius: 5px;
