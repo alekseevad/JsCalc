@@ -34,11 +34,24 @@ function print(sign) {
 function calc(){
     const myExpr = output.value
     var postfix = parser(myExpr)
-    var result
-    var temp
-    for(let i = 0; i < postfix.length; ++i){
+    let result
+    let a
+    let b
+    let i = 0
+    var stack = new Array()
+    while(i < postfix.length) {
         if(priority(postfix[i]) == 5) {
-
+            stack.push(postfix[i])
+            ++i
+        } 
+        else {
+            b = stack.pop()
+            a = stack.pop()
+            a = parseInt(a)
+            b = parseInt(b)
+            result = decision(postfix[i], a, b)
+            stack.push(result)
+            ++i
         }
     }
     output.value = result
@@ -95,14 +108,11 @@ function parser(expression){
 
             case 1:
                 let index1 = stack.length - 1
-                while(stack[0] != undefined) {                
-                    if(stack[index1] == '('){
-                        stack.pop()
-                    } else {
-                        resust = stack.pop()
-                    }
-                    ++index1
+                while((stack[0] != undefined) && (stack[index1] != '(')) {                
+                    result.push(stack.pop())
+                    --index1
                 }
+                stack.pop()
                 ++index
                 break
 
@@ -110,51 +120,45 @@ function parser(expression){
                 var index2 = stack.length - 1
                 if(stack[0] == undefined) {
                     stack.push(expression[index])
-                } else {
-                    if(priority(stack[stack.length-1]) <= priority(expression[index]) ){
-                        while((stack[0] != undefined) || (stack[index2] != '(')) {
-                            result.push(stack.pop())
-                            ++index2
-                        }
-                    } else {
-                        stack.push(expression[index])
-                    }
                 }
-                ++index
+                else {
+                    while((stack[0] != undefined) && (priority(stack[index2]) >= priority(expression[index])) && (stack[index2] != '(')) {
+                        result.push(stack.pop())
+                        --index2;
+                    }
+                    stack.push(expression[index])
+                }
+                index++
                 break
 
             case 3:
                 var index3 = stack.length - 1
                 if(stack[0] == undefined) {
                     stack.push(expression[index])
-                } else {
-                    if(priority(stack[stack.length-1]) <= priority(expression[index]) ){
-                        while((stack[0] != undefined) || (stack[index2] != '(')) {
-                            result.push(stack.pop())
-                            ++index2
-                        }
-                    } else {
-                        stack.push(expression[index])
-                    }
                 }
-                ++index
+                else {
+                    while((stack[0] != undefined) && (priority(stack[index3]) >= priority(expression[index])) && (stack[index3] != '(')) {
+                        result.push(stack.pop())
+                        --index3;
+                    }
+                    stack.push(expression[index])
+                }
+                index++
                 break    
 
             case 4:
                 var index4 = stack.length - 1
                 if(stack[0] == undefined) {
                     stack.push(expression[index])
-                } else {
-                    if(priority(stack[stack.length-1]) <= priority(expression[index]) ){
-                        while((stack[0] != undefined) || (stack[index2] != '(')) {
-                            result.push(stack.pop())
-                            ++index2
-                        }
-                    } else {
-                        stack.push(expression[index])
-                    }
                 }
-                ++index
+                else {
+                    while((stack[0] != undefined) && (priority(stack[index4]) >= priority(expression[index])) && (stack[index4] != '(')) {
+                        result.push(stack.pop())
+                        --index4;
+                    }
+                    stack.push(expression[index])
+                }
+                index++
                 break
             
             case 5:
@@ -173,5 +177,32 @@ function parser(expression){
         }
     }
     return result
-}
+}   
 
+function decision(operation, a, b){
+    switch (operation) {
+        case '+':
+            return (a + b)
+            break;
+
+        case '-':
+            return (a - b)
+            break
+
+        case '*':
+            return (a * b)
+            break
+
+        case '/':
+            return (a / b)
+            break
+
+        case '^':
+            return (a**b)
+            break
+
+        default:
+            alert('Wrong expression')
+            break;
+    }
+}
